@@ -2,13 +2,16 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ArrowRight, Sparkles, X } from "lucide-react";
 import { siteConfig } from "@/config/site";
 
 export default function AnnouncementBar() {
   const [isVisible, setIsVisible] = useState(true);
+  const pathname = usePathname();
 
-  if (!isVisible) return null;
+  // Hide on homepage to match reference mockup cleanly
+  if (!isVisible || pathname === "/") return null;
 
   return (
     <aside

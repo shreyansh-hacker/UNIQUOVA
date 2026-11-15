@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowUpRight, ArrowUp, Mail, Phone, MapPin, Shield, CheckCircle2, Activity, Globe2, Sparkles } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import ButtonAnimated from "@/components/ui/ButtonAnimated";
+import UqLogo from "@/components/ui/UqLogo";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -141,18 +142,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pb-16 border-b border-white/10">
           {/* Col 1-5: Brand & Positioning */}
           <div className="lg:col-span-5 space-y-4">
-            <Link href="/" className="inline-flex items-center gap-2.5 group">
-              <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-lavender font-space font-extrabold text-base group-hover:scale-105 transition-all shadow-glowDark">
-                UQ
-              </div>
-              <div className="flex flex-col">
-                <span className="font-space font-extrabold text-xl tracking-tight text-white group-hover:text-lavender transition-colors">
-                  {siteConfig.brandName}
-                </span>
-                <span className="font-inter text-[9.5px] uppercase tracking-widest text-neutral-400 font-semibold -mt-1">
-                  E-Commerce Growth Agency
-                </span>
-              </div>
+            <Link href="/" className="inline-flex items-center group">
+              <UqLogo size="md" variant="light" />
             </Link>
 
             <p className="font-inter text-neutral-400 text-sm max-w-sm leading-relaxed">

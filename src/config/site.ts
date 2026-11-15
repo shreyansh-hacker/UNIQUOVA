@@ -1,16 +1,17 @@
 export const siteConfig = {
-  brandName: "UNIQUOVA",
-  legalName: "UNIQUOVA Growth Agency Ltd.",
-  tagline: "E-Commerce Account Management & Growth Agency",
+  brandName: "UNIQOVA",
+  displayBrandName: "UNIQOVA.",
+  legalName: "UNIQOVA Digital Growth Agency Ltd.",
+  tagline: "Your Vision. Our Expertise.",
   heroHeadline: {
-    line1: "Your Marketplace.",
-    line2: "Our Expertise.",
-    line3: "Your Growth.",
+    line1: "Your Vision,",
+    line2: "Our Digital Expertise.",
+    highlightWord: "Digital",
   },
   heroSubtitle:
-    "We help ambitious brands simplify marketplace operations, optimize performance, and unlock sustainable growth across Amazon, Flipkart, Meesho, and Shopify.",
+    "From e-commerce to cutting-edge technology, we craft innovative solutions to help your business grow faster, smarter and bigger.",
   heroSupporting: "Strategic expertise. Hands-on execution. Measurable progress.",
-  announcement: "Helping ambitious brands grow across leading marketplaces.",
+  announcement: "Full-Service Digital Agency · Helping ambitious brands scale globally.",
   
   contact: {
     email: "growth@uniquova.com",

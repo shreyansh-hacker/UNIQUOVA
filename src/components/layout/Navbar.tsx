@@ -3,206 +3,196 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, ArrowUpRight, ChevronRight, Shield, Sparkles, Activity } from "lucide-react";
-import { siteConfig } from "@/config/site";
+import { Menu, X, ArrowRight, ChevronDown } from "lucide-react";
+import UqLogo from "@/components/ui/UqLogo";
 import { useAuditModal } from "@/context/AuditModalContext";
-import ButtonAnimated from "@/components/ui/ButtonAnimated";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
   const pathname = usePathname();
   const { openAuditModal } = useAuditModal();
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 25);
+      setIsScrolled(window.scrollY > 20);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileMenuOpen(false);
+    setServicesDropdownOpen(false);
   }, [pathname]);
 
-  const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "Services", href: "/services" },
-    { name: "Platforms", href: "/platforms" },
-    { name: "Process", href: "/#process" },
-    { name: "Reviews", href: "/#reviews" },
-    { name: "Case Studies", href: "/case-studies" },
-    { name: "About Us", href: "/about" },
-    { name: "FAQ", href: "/#faq" },
+  const navItems = [
+    { name: "Home", href: "/", isHome: true },
+    { name: "About", href: "/about" },
+    {
+      name: "Services",
+      href: "/services",
+      hasDropdown: true,
+      subItems: [
+        { name: "E-commerce Solutions", href: "/services" },
+        { name: "Website Development", href: "/services" },
+        { name: "App Development", href: "/services" },
+        { name: "Graphic Designing", href: "/services" },
+        { name: "Branding & Strategy", href: "/services" },
+      ],
+    },
+    { name: "Our Work", href: "/case-studies" },
+    { name: "Industries", href: "/platforms" },
+    { name: "Contact", href: "/contact" },
   ];
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full transition-all duration-300 py-3 sm:py-4 px-3 sm:px-6 pointer-events-none">
-        <div
-          className={`pointer-events-auto max-w-7xl mx-auto rounded-2xl sm:rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            isScrolled
-              ? "bg-white/70 backdrop-blur-2xl backdrop-saturate-150 border border-white/80 shadow-[0_12px_40px_0_rgba(23,21,29,0.08)] py-2.5 px-4 sm:px-6"
-              : "bg-white/40 backdrop-blur-xl border border-white/50 shadow-soft py-3 px-4 sm:px-6"
-          } relative overflow-hidden`}
-        >
-          {/* Apple Specular Top Rim Highlight */}
-          <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white to-transparent opacity-90 pointer-events-none" />
-          
-          <div className="flex items-center justify-between gap-4">
-            {/* Left: Brand Identity */}
-            <Link
-              href="/"
-              className="group flex items-center gap-2.5 focus:outline-none shrink-0"
-              aria-label={`${siteConfig.brandName} Home`}
-            >
-              <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-b from-brand-black to-brand-charcoal flex items-center justify-center text-white shadow-soft group-hover:scale-105 transition-all overflow-hidden border border-white/20">
-                <span className="font-space font-extrabold text-sm sm:text-base text-lavender tracking-tighter">
-                  UQ
-                </span>
-                {/* Glossy sheen reflection on logo */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-60 pointer-events-none" />
-              </div>
+      <header className="sticky top-0 z-50 w-full transition-all duration-300 py-3 sm:py-4 px-4 sm:px-8 pointer-events-none">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 pointer-events-auto">
+          {/* LEFT: Stylized UQ Logo & Brand Wordmark */}
+          <Link
+            href="/"
+            className="group flex items-center focus:outline-none shrink-0"
+            aria-label="UNIQOVA Home"
+          >
+            <UqLogo size="md" variant="dark" />
+          </Link>
 
-              <div className="flex flex-col">
-                <div className="flex items-center gap-1.5">
-                  <span className="font-space font-extrabold text-base sm:text-lg tracking-tight text-brand-black group-hover:text-lavender-deep transition-colors leading-tight">
-                    {siteConfig.brandName}
-                  </span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse hidden sm:inline-block" />
-                </div>
-                <span className="font-inter text-[9px] uppercase tracking-widest text-neutral-500 font-semibold -mt-0.5">
-                  Growth Agency
-                </span>
-              </div>
-            </Link>
+          {/* CENTER: Floating Frosted Glass Capsule Navigation Bar */}
+          <nav className="hidden lg:flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-white/70 backdrop-blur-xl border border-white/80 shadow-[0_8px_30px_rgba(23,21,29,0.06)] relative">
+            {navItems.map((item) => {
+              const isActive = item.isHome ? pathname === "/" : pathname.startsWith(item.href);
 
-            {/* Center: Apple Liquid Glass Navigation Pill */}
-            <nav className="hidden lg:flex items-center gap-0.5 p-1 rounded-full bg-black/[0.03] border border-black/[0.04] shadow-inner relative">
-              {navLinks.map((link, idx) => {
-                const isActive = pathname === link.href;
-                const isHovered = hoveredIndex === idx;
-
+              if (item.hasDropdown) {
                 return (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    onMouseEnter={() => setHoveredIndex(idx)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                    className={`relative px-3 xl:px-3.5 py-1.5 text-xs xl:text-sm font-inter transition-all duration-200 rounded-full z-10 ${
-                      isActive
-                        ? "text-brand-black font-semibold"
-                        : "text-neutral-700 hover:text-brand-black font-medium"
-                    }`}
+                  <div
+                    key={item.name}
+                    className="relative"
+                    onMouseEnter={() => setServicesDropdownOpen(true)}
+                    onMouseLeave={() => setServicesDropdownOpen(false)}
                   >
-                    {/* Active & Hover Pill Animation */}
-                    {(isActive || isHovered) && (
-                      <span
-                        className={`absolute inset-0 rounded-full transition-all duration-300 -z-10 ${
-                          isActive
-                            ? "bg-white/90 shadow-sm border border-brand-border/60"
-                            : "bg-white/60 shadow-none border border-transparent"
+                    <Link
+                      href={item.href}
+                      className={`inline-flex items-center gap-1 px-4 py-2 text-xs font-inter font-medium rounded-full transition-all duration-200 ${
+                        isActive
+                          ? "bg-primary text-white shadow-[0_4px_14px_rgba(108,56,255,0.35)]"
+                          : "text-neutral-700 hover:text-brand-black hover:bg-black/[0.04]"
+                      }`}
+                    >
+                      <span>{item.name}</span>
+                      <ChevronDown
+                        className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                          servicesDropdownOpen ? "rotate-180" : ""
                         }`}
                       />
+                    </Link>
+
+                    {/* Dropdown Menu */}
+                    {servicesDropdownOpen && (
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-56 animate-fade-in z-50">
+                        <div className="bg-white/95 backdrop-blur-2xl rounded-2xl p-2 border border-white/80 shadow-[0_12px_36px_rgba(23,21,29,0.1)] flex flex-col gap-1">
+                          {item.subItems?.map((sub) => (
+                            <Link
+                              key={sub.name}
+                              href={sub.href}
+                              className="px-3.5 py-2 text-xs font-inter text-neutral-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-colors font-medium flex items-center justify-between group/sub"
+                            >
+                              <span>{sub.name}</span>
+                              <span className="opacity-0 group-hover/sub:opacity-100 group-hover/sub:translate-x-0.5 transition-all text-primary">
+                                →
+                              </span>
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
                     )}
-                    {link.name}
-                  </Link>
+                  </div>
                 );
-              })}
-            </nav>
+              }
 
-            {/* Right: Actions */}
-            <div className="hidden sm:flex items-center gap-2.5 shrink-0">
-              <Link
-                href="/contact"
-                className="text-xs xl:text-sm font-inter font-medium text-neutral-700 hover:text-brand-black px-3 py-2 transition-colors rounded-full hover:bg-black/[0.03]"
-              >
-                Contact
-              </Link>
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`px-4 py-2 text-xs font-inter transition-all duration-200 rounded-full font-medium ${
+                    isActive
+                      ? "bg-primary text-white shadow-[0_4px_14px_rgba(108,56,255,0.35)]"
+                      : "text-neutral-700 hover:text-brand-black hover:bg-black/[0.04]"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
+          </nav>
 
-              {/* Apple-Grade Animated Magnetic CTA Button */}
-              <ButtonAnimated
-                onClick={openAuditModal}
-                variant="primary"
-                size="sm"
-                showArrow={true}
-                className="!rounded-full px-5 py-2.5"
-              >
-                Get Free Audit
-              </ButtonAnimated>
-            </div>
+          {/* RIGHT: "Let's Talk ->" Dark Pill Button */}
+          <div className="hidden sm:flex items-center gap-3 shrink-0">
+            <Link
+              href="/contact"
+              className="group relative inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-brand-black text-white font-inter text-xs sm:text-sm font-semibold shadow-[0_4px_16px_rgba(23,21,29,0.2)] hover:bg-[#252230] hover:shadow-[0_8px_24px_rgba(23,21,29,0.3)] transition-all duration-200 active:scale-95"
+            >
+              <span>Let's Talk</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
 
-            {/* Mobile Hamburger Toggle */}
-            <div className="flex lg:hidden items-center gap-2">
-              <ButtonAnimated
-                onClick={openAuditModal}
-                variant="primary"
-                size="sm"
-                className="!rounded-full px-3 py-1.5 sm:hidden text-xs"
-              >
-                Audit
-              </ButtonAnimated>
-
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 rounded-xl bg-white/80 border border-brand-border text-brand-black hover:bg-white transition-all shadow-soft cursor-pointer hover:scale-105 active:scale-95"
-                aria-label="Toggle Navigation Menu"
-              >
-                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-              </button>
-            </div>
+          {/* Mobile Hamburger Toggle */}
+          <div className="flex lg:hidden items-center gap-2">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2.5 rounded-full bg-white/80 border border-brand-border text-brand-black hover:bg-white shadow-soft transition-colors focus:outline-none"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </div>
-
-        {/* Mobile Frosted Glass Navigation Sheet */}
-        {mobileMenuOpen && (
-          <div className="pointer-events-auto lg:hidden mt-2 max-w-7xl mx-auto rounded-3xl bg-white/90 backdrop-blur-2xl border border-white/80 shadow-2xl p-6 transition-all animate-in fade-in slide-in-from-top-4 duration-300">
-            <div className="flex flex-col space-y-1">
-              {navLinks.map((link) => {
-                const isActive = pathname === link.href;
-                return (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    className={`px-4 py-3 rounded-2xl text-base font-space font-bold transition-all flex items-center justify-between ${
-                      isActive
-                        ? "bg-lavender/30 text-brand-black shadow-sm"
-                        : "text-neutral-700 hover:bg-neutral-100 hover:text-brand-black"
-                    }`}
-                  >
-                    <span>{link.name}</span>
-                    <ChevronRight className="w-4 h-4 text-neutral-400" />
-                  </Link>
-                );
-              })}
-            </div>
-
-            <div className="pt-6 mt-4 border-t border-brand-border/60 flex flex-col gap-3">
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  openAuditModal();
-                }}
-                className="w-full py-3.5 rounded-2xl bg-brand-black text-white font-space font-bold text-sm shadow-soft text-center flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <span>Request Free Account Audit</span>
-                <ArrowUpRight className="w-4 h-4 text-lavender" />
-              </button>
-
-              <Link
-                href="/contact"
-                className="w-full py-3 rounded-2xl bg-white border border-brand-border text-brand-black font-space font-semibold text-sm text-center hover:bg-neutral-50 transition-colors"
-              >
-                Direct Contact
-              </Link>
-            </div>
-          </div>
-        )}
       </header>
+
+      {/* Mobile Fullscreen Animated Navigation Overlay */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-40 bg-white/95 backdrop-blur-2xl lg:hidden flex flex-col justify-between p-6 pt-24 animate-fade-in">
+          <div className="flex flex-col space-y-4">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="font-space text-2xl font-bold text-brand-black hover:text-primary transition-colors py-1 flex items-center justify-between"
+              >
+                <span>{item.name}</span>
+                <span className="text-sm font-normal text-neutral-400">→</span>
+              </Link>
+            ))}
+          </div>
+
+          <div className="space-y-4 pt-6 border-t border-brand-border">
+            <Link
+              href="/contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full bg-brand-black text-white font-medium text-sm shadow-soft"
+            >
+              <span>Let's Talk</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                openAuditModal();
+              }}
+              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full bg-primary text-white font-medium text-sm shadow-soft"
+            >
+              <span>Get Free Account Audit</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }

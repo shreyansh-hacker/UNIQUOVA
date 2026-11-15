@@ -9,6 +9,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        primary: {
+          DEFAULT: "#6C38FF",    // Reference mockup vibrant violet
+          hover: "#5B28E8",
+          dark: "#4F21D4",
+          light: "#8B5CF6",
+          subtle: "#F5F2FF",
+          glow: "rgba(108, 56, 255, 0.4)",
+        },
         lavender: {
           light: "#E9E7EF",      // Light Lavender Grey
           DEFAULT: "#B9A7E8",    // Soft Lavender
@@ -46,10 +54,28 @@ const config: Config = {
       animation: {
         'float-slow': 'float 7s ease-in-out infinite',
         'float-medium': 'float 5s ease-in-out infinite',
+        'float-1': 'floatCard1 5.5s ease-in-out infinite',
+        'float-2': 'floatCard2 6.5s ease-in-out infinite 0.8s',
+        'float-3': 'floatCard3 6s ease-in-out infinite 1.5s',
+        'float-4': 'floatCard1 7s ease-in-out infinite 2s',
+        'float-5': 'floatCard2 5s ease-in-out infinite 1.2s',
         'pulse-subtle': 'pulseSubtle 4s ease-in-out infinite',
+        'spin-slow': 'spin 22s linear infinite',
         'marquee': 'marquee 30s linear infinite',
       },
       keyframes: {
+        floatCard1: {
+          '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+          '50%': { transform: 'translateY(-10px) rotate(0.8deg)' },
+        },
+        floatCard2: {
+          '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+          '50%': { transform: 'translateY(-14px) rotate(-1deg)' },
+        },
+        floatCard3: {
+          '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+          '50%': { transform: 'translateY(-8px) rotate(1.2deg)' },
+        },
         float: {
           '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
           '50%': { transform: 'translateY(-12px) rotate(1deg)' },
